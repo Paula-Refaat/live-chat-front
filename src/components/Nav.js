@@ -14,30 +14,20 @@ const Navbar = () => {
     <>
       <nav className="nav-extended">
         <div className="nav-wrapper">
-          <Link to="#" className="brand-logo" style={{ "margin-left": "10px" }}>
+          <Link to="#" className="brand-logo" style={{ marginLeft: "10px" }}>
             Meeting
           </Link>
           <Link to="#" data-target="mobile-demo" className="sidenav-trigger">
             <i className="fa fa-bars" aria-hidden="true" />
           </Link>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/register">Register</Link>
-            </li>
+            {/* Additional nav items can be added here */}
           </ul>
         </div>
       </nav>
 
       <ul className="sidenav" id="mobile-demo">
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
-        <li>
-          <Link to="/register">Register</Link>
-        </li>
+        {/* Additional sidenav items can be added here */}
       </ul>
     </>
   );

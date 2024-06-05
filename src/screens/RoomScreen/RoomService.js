@@ -2,8 +2,8 @@ import io from "socket.io-client";
 import Peer from "simple-peer";
 import { addPeer, createPeer } from "./RoomUtils";
 
-// const BASE_URL = process.env.REACT_APP_BASE_URL;
-const BASE_URL = "https://gp.softwave-dev.com/api/v1";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+// const BASE_URL = "https://gp.softwave-dev.com";
 
 
 const RoomService = {
