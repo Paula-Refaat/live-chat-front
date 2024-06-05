@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import M from "materialize-css";
 
 import Video from "../../components/Video";
-import useAuthenticated from "../../hooks/useAuthentication";
 import "./RoomScreen.css";
 import RoomService from "./RoomService";
 import {
@@ -15,7 +14,6 @@ import {
 } from "./RoomUtils";
 
 const RoomScreen = (props) => {
-  const isAuthenticated = useAuthenticated();
   const [peers, setPeers] = useState([]); //state for rendering and also have stream of peers
   const socketRef = useRef(); //own socket
   const userVideoRef = useRef(); //for display own video
@@ -31,30 +29,12 @@ const RoomScreen = (props) => {
   const currentPeers = useRef([]);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      M.toast({ html: "Login first", classes: "red" });
-      props.history.push("/login");
-    }
-    //eslint-disable-next-line
-  }, [isAuthenticated]);
-
-  useEffect(() => {
-    RoomService.connectToSocketAndWebcamStream(
-      localStorage.getItem("Token")
-    ).then(({ socket, webcamStream }) => {
+    RoomService.connectToSocketAndWebcamStream().then(({ socket, webcamStream }) => {
       socketRef.current = socket;
 
       setWebCamStream(webcamStream);
       userVideoRef.current.srcObject = webcamStream;
 
-      // if(!webcamStream.getAudioTracks()[0].enabled) webcamStream.getAudioTracks()[0].enabled = true;
-
-      // const audioTracks = webcamStream.getAudioTracks();
-      // if (audioTracks.length > 0 && !audioTracks[0].enabled) {
-      //     audioTracks[0].enabled = true;
-      //     // Update the state to re-render the component
-      //     setWebCamStream(webcamStream);
-      // }
       RoomService.setupSocketListeners(
         socketRef.current,
         webcamStream,
@@ -75,12 +55,10 @@ const RoomScreen = (props) => {
 
   //Stopping webcam and screen media and audio also
   const stopAllVideoAudioMedia = async () => {
-    debugger;
     //destroying previous stream(screen capture stream)
     const previousScreenCaptureStream = screenCaptureStream.current;
     if (previousScreenCaptureStream) {
-      const previousScreenCaptureStreamTracks =
-        previousScreenCaptureStream.getTracks();
+      const previousScreenCaptureStreamTracks = previousScreenCaptureStream.getTracks();
       previousScreenCaptureStreamTracks.forEach((track) => {
         track.stop();
       });

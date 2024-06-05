@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import M from "materialize-css";
 
-import useAuthenticated from "../hooks/useAuthentication";
-
 const Navbar = () => {
-  let isAuthenticated = useAuthenticated();
-
   useEffect(() => {
     document.addEventListener("DOMContentLoaded", function () {
       let elems = document.querySelectorAll(".sidenav");
@@ -25,39 +21,23 @@ const Navbar = () => {
             <i className="fa fa-bars" aria-hidden="true" />
           </Link>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
-            {isAuthenticated ? (
-              <li>
-                <Link to="/">Dashboard</Link>
-              </li>
-            ) : (
-              <>
-                <li>
-                  <Link to="/login">Login</Link>
-                </li>
-                <li>
-                  <Link to="/register">Register</Link>
-                </li>
-              </>
-            )}
-          </ul>
-        </div>
-      </nav>
-
-      <ul className="sidenav" id="mobile-demo">
-        {isAuthenticated ? (
-          <li>
-            <Link to="/">Dashboard</Link>
-          </li>
-        ) : (
-          <>
             <li>
               <Link to="/login">Login</Link>
             </li>
             <li>
               <Link to="/register">Register</Link>
             </li>
-          </>
-        )}
+          </ul>
+        </div>
+      </nav>
+
+      <ul className="sidenav" id="mobile-demo">
+        <li>
+          <Link to="/login">Login</Link>
+        </li>
+        <li>
+          <Link to="/register">Register</Link>
+        </li>
       </ul>
     </>
   );
