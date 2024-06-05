@@ -1,37 +1,32 @@
 import React, { useEffect, useRef, useState, createRef } from "react";
 import { useHistory } from "react-router-dom";
-import M from "materialize-css";
-
 import Video from "../../components/Video";
-import "./RoomScreen.css";
 import RoomService from "./RoomService";
 import {
   muteOrUnmuteAudio,
   playOrStopVideo,
   sendMessage,
   shareScreen,
-  stopAllVideoAudioMedia,
 } from "./RoomUtils";
+import "./RoomScreen.css";
 
 const RoomScreen = (props) => {
-  const [peers, setPeers] = useState([]); //state for rendering and also have stream of peers
-  const socketRef = useRef(); //own socket
-  const userVideoRef = useRef(); //for display own video
-  const messageRef = createRef(); //message input
-  const peersRef = useRef([]); //collection of peers who are currently connect to a room
-  const screenCaptureStream = useRef(); //screen capture stream
-  const roomId = props.match.params.roomId; //joined room id
+  const [peers, setPeers] = useState([]); // state for rendering and also have stream of peers
+  const socketRef = useRef(); // own socket
+  const userVideoRef = useRef(); // for display own video
+  const messageRef = createRef(); // message input
+  const peersRef = useRef([]); // collection of peers who are currently connect to a room
+  const screenCaptureStream = useRef(); // screen capture stream
+  const roomId = props.match.params.roomId; // joined room id
   const [isVideoMuted, setIsVideoMuted] = useState(false);
   const [isAudioMuted, setIsAudioMuted] = useState(false);
-  const [webcamStream, setWebCamStream] = useState(null); //own webcam stream
-  const [messages, setMessages] = useState([]); //all messages state after joining the room
+  const [webcamStream, setWebCamStream] = useState(null); // own webcam stream
+  const [messages, setMessages] = useState([]); // all messages state after joining the room
   const history = useHistory();
-  const currentPeers = useRef([]);
 
   useEffect(() => {
     RoomService.connectToSocketAndWebcamStream().then(({ socket, webcamStream }) => {
       socketRef.current = socket;
-
       setWebCamStream(webcamStream);
       userVideoRef.current.srcObject = webcamStream;
 
@@ -53,18 +48,16 @@ const RoomScreen = (props) => {
     //eslint-disable-next-line
   }, []);
 
-  //Stopping webcam and screen media and audio also
   const stopAllVideoAudioMedia = async () => {
-    //destroying previous stream(screen capture stream)
     const previousScreenCaptureStream = screenCaptureStream.current;
     if (previousScreenCaptureStream) {
-      const previousScreenCaptureStreamTracks = previousScreenCaptureStream.getTracks();
+      const previousScreenCaptureStreamTracks =
+        previousScreenCaptureStream.getTracks();
       previousScreenCaptureStreamTracks.forEach((track) => {
         track.stop();
       });
     }
 
-    //destroying previous stream(webcam stream)
     const previousWebcamStream = webcamStream;
     if (previousWebcamStream) {
       const previousWebcamStreamTracks = previousWebcamStream.getTracks();
@@ -171,9 +164,9 @@ const RoomScreen = (props) => {
           <input
             ref={messageRef}
             type="text"
-            placeholder="Type message here..."
+            placeholder="Enter your message here"
           />
-          <i onClick={handleSendMessage} className="fa fa-paper-plane" />
+          <button type="submit">Send</button>
         </form>
       </div>
     </div>

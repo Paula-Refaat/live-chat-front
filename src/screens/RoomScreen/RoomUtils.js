@@ -25,7 +25,7 @@ export const startWebCamVideo = async (
   const videoStreamTrack = newWebcamStream.getVideoTracks()[0]; //taking video track of stream
   const audioStreamTrack = newWebcamStream.getAudioTracks()[0]; //taking audio track of stream
   //replacing all video track of all peer connected to this peer
-  peers.map((peer) => {
+  peers.forEach((peer) => {
     //replacing video track
     peer.peer.replaceTrack(
       peer.peer.streams[0].getVideoTracks()[0],
@@ -63,7 +63,7 @@ export const shareScreen = async (
   debugger;
   //replacing video track of each peer connected with getDisplayMedia video track and audio will remain as it is
   //as all browser does not return audio track with getDisplayMedia
-  currentPeers.map((peer) =>
+  currentPeers.forEach((peer) =>
     peer.peer.replaceTrack(
       peer.peer.streams[0].getVideoTracks()[0],
       screenCaptureVideoStreamTrack,
